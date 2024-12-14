@@ -1,17 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model Distribution {
   id           String        @id @default(cuid())
   createdAt    DateTime      @default(now())
-  participants Participant[] 
   items        Item[]
+  participants Participant[]
   preferences  Preference[]
   result       Result?
 }
@@ -35,10 +35,9 @@ model Preference {
   participantName String
   preferenceList  String[]
   distributionId  String
-  distribution    Distribution @relation(fields: [distributionId], references: [id])
   viewToken       String?      @unique @default(cuid())
+  distribution    Distribution @relation(fields: [distributionId], references: [id])
 }
-
 
 model Result {
   id             String       @id @default(cuid())

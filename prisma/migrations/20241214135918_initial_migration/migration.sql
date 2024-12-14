@@ -30,6 +30,7 @@ CREATE TABLE "Preference" (
     "participantName" TEXT NOT NULL,
     "preferenceList" TEXT[],
     "distributionId" TEXT NOT NULL,
+    "viewToken" TEXT,
 
     CONSTRAINT "Preference_pkey" PRIMARY KEY ("id")
 );
@@ -42,6 +43,9 @@ CREATE TABLE "Result" (
 
     CONSTRAINT "Result_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Preference_viewToken_key" ON "Preference"("viewToken");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Result_distributionId_key" ON "Result"("distributionId");
