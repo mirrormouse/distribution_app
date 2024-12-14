@@ -9,30 +9,31 @@ export default function ResultPage() {
     const [result, setResult] = useState(null);
     const [error, setError] = useState('');
 
-    const loadData = async () => {
-        if (!id) return;
-        try {
-            const res = await fetch(`/api/data?id=${id}`);
-            if (!res.ok) {
-                setError('データを取得できませんでした。IDが正しいか確認してください。');
-                setData(null);
-                return;
-            }
-            const d = await res.json();
-            setData(d);
-            if (d.result) {
-                setResult(d.result);
-            } else {
-                setResult(null);
-            }
-            setError('');
-        } catch (e) {
-            console.error(e);
-            setError('予期せぬエラーが発生しました。');
-        }
-    };
+
 
     useEffect(() => {
+        const loadData = async () => {
+            if (!id) return;
+            try {
+                const res = await fetch(`/api/data?id=${id}`);
+                if (!res.ok) {
+                    setError('データを取得できませんでした。IDが正しいか確認してください。');
+                    setData(null);
+                    return;
+                }
+                const d = await res.json();
+                setData(d);
+                if (d.result) {
+                    setResult(d.result);
+                } else {
+                    setResult(null);
+                }
+                setError('');
+            } catch (e) {
+                console.error(e);
+                setError('予期せぬエラーが発生しました。');
+            }
+        };
         loadData();
     }, [id]);
 
