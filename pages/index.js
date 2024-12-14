@@ -1,13 +1,11 @@
 // pages/index.js
-import Layout from '../components/Layout';
+import Link from 'next/link';
 
 export default function Home() {
   return (
-    <Layout>
-      <div className="max-w-xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">振り分けアプリ</h1>
-        {/* コンテンツ */}
-      </div>
-    </Layout>
-  )
+    <div style={{ margin: '20px' }}>
+      <h1>振り分けアプリ</h1>
+      <Link href="/new">新しい振り分けを作成する</Link>
+    </div>
+  );
 }

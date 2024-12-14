@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         // 同一participantからの重複送信チェック
         const alreadySubmitted = dist.preferences.some(pref => pref.participantName === participant);
         if (alreadySubmitted) {
-            return res.status(400).json({ error: 'すでに選好を送信済みです' });
+            return res.status(400).json({ error: 'すでに優先順位を送信済みです' });
         }
 
         if (!participant || !preferences || preferences.length !== dist.items.length) {

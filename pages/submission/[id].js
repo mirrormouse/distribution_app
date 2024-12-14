@@ -14,31 +14,10 @@ export default function SubmissionPage() {
         if (!id || !token) return;
         const fetchData = async () => {
             try {
-                const res = await fetch(`/api/data?id=${id}`);
-                if (!res.ok) {
-                    setError('データを取得できませんでした。IDが正しいか確認してください。');
-                    setLoading(false);
-                    return;
-                }
-                const d = await res.json();
-                // preferencesには participantName: preferenceList が格納されている
-                // しかしtokenで特定のparticipantを探すには、/api/preferencesByToken のようなAPIが必要か、
-                // または全データからトークンを探すかが必要。
-                // 今回はDBアクセスをAPI層で行うため、新APIを追加するか、
-                // preferencesにtokenを返す仕組みが必要になる。
-
-                // 簡易対応：新規APIを作らず、/api/dataでviewTokenを返すようにするか、
-                // token→participantNameを特定するAPIを作る。
-                // ここでは /api/preferencesByToken?id=...&token=... のAPIを用意する方法を示す。
-
-                // 説明：
-                // submissionページではtokenを用いてparticipantNameを特定し、そのpreferencesを表示する必要がある。
-                // data APIはviewTokenを返していないので、新たに/api/preferenceByTokenを用意します。
-
                 const prefRes = await fetch(`/api/preferenceByToken?id=${id}&token=${encodeURIComponent(token)}`);
                 if (!prefRes.ok) {
                     const errData = await prefRes.json();
-                    setError(errData.error || '不明なエラー');
+                    setError(errData.error || 'データを取得できませんでした。');
                     setLoading(false);
                     return;
                 }
@@ -55,32 +34,42 @@ export default function SubmissionPage() {
         fetchData();
     }, [id, token]);
 
-    if (loading) return <div style={{ margin: '20px' }}>読み込み中...</div>;
+    if (loading) {
+        return (
+            <div className="max-w-xl mx-auto mt-10 bg-background-light p-6 rounded shadow">
+                <div className="text-text-light">読み込み中...</div>
+            </div>
+        );
+    }
 
     if (error) {
         return (
-            <div style={{ margin: '20px' }}>
-                <h1>送信内容確認</h1>
-                <p style={{ color: 'red' }}>{error}</p>
+            <div className="max-w-xl mx-auto mt-10 bg-background-light p-6 rounded shadow">
+                <h1 className="text-2xl font-bold mb-4 text-mint">送信内容確認</h1>
+                <p className="text-red-600">{error}</p>
             </div>
         );
     }
 
     if (!myPrefs || myPrefs.length === 0) {
         return (
-            <div style={{ margin: '20px' }}>
-                <h1>送信内容確認</h1>
-                <p>データが見つかりませんでした。</p>
+            <div className="max-w-xl mx-auto mt-10 bg-background-light p-6 rounded shadow">
+                <h1 className="text-2xl font-bold mb-4 text-mint">送信内容確認</h1>
+                <p className="text-text-light">
+                    あなた(<span className="font-semibold">{participantName}</span>)はまだ優先順位を送信していないようです。
+                </p>
             </div>
         );
     }
 
     return (
-        <div style={{ margin: '20px' }}>
-            <h1>送信内容確認</h1>
-            <p>参加者: {participantName}</p>
-            <h2>あなたが送信した優先順位:</h2>
-            <ol>
+        <div className="max-w-xl mx-auto mt-10 bg-background-light p-6 rounded shadow">
+            <h1 className="text-2xl font-bold mb-4 text-mint">送信内容確認</h1>
+            <p className="text-text-light mb-4">
+                参加者: <span className="font-semibold">{participantName}</span>
+            </p>
+            <h2 className="font-semibold text-text-light mb-2">あなたが送信した優先順位:</h2>
+            <ol className="list-decimal list-inside space-y-2 text-text-secondary">
                 {myPrefs.map((item, idx) => (
                     <li key={idx}>{item}</li>
                 ))}

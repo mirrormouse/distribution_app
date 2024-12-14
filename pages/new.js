@@ -21,9 +21,9 @@ export default function NewPage() {
             return;
         }
 
-        // 参加者数とアイテム数の関係は以前のまま
-        if (participants.length !== items.length) {
-            alert('参加者数とアイテム数を同じにしてください。');
+        // アイテム数が参加者数以上であることを確認
+        if (items.length < participants.length) {
+            alert('アイテム数は参加者数以上にしてください。（参加者よりアイテムが少ない状態は不可）');
             return;
         }
 
@@ -34,7 +34,8 @@ export default function NewPage() {
         });
 
         if (!res.ok) {
-            alert('振り分け作成に失敗しました。');
+            const errData = await res.json();
+            alert('振り分け作成に失敗しました: ' + (errData.error || '不明なエラー'));
             return;
         }
 
@@ -46,8 +47,8 @@ export default function NewPage() {
     };
 
     return (
-        <div className="max-w-xl mx-auto mt-10 bg-white p-6 rounded shadow">
-            <h1 className="text-2xl font-bold mb-6">新しい振り分け作成</h1>
+        <div className="max-w-2xl mx-auto mt-10 bg-background-light p-8 rounded shadow-lg">
+            <h1 className="text-3xl font-bold mb-8 text-mint">新しい振り分け作成</h1>
             <ParticipantListManager
                 participants={participants}
                 onAdd={addParticipant}
@@ -61,18 +62,17 @@ export default function NewPage() {
 
             <button
                 onClick={handleCreate}
-                className="bg-brand text-white px-4 py-2 rounded hover:bg-brand/90 transition"
+                className="w-full bg-mint text-background px-4 py-3 rounded hover:bg-mint-light transition text-lg font-semibold"
             >
                 振り分けリンク作成
             </button>
 
             {createdLink && (
-                <div className="mt-6">
-                    <p className="font-semibold mb-2">参加者用選好入力リンク:</p>
-                    {/* リンクがクリック可能で分かるように text-blue-600 underline */}
+                <div className="mt-6 p-4 bg-background-light rounded">
+                    <p className="font-semibold mb-2 text-text-light">参加者用優先順位入力リンク:</p>
                     <a
                         href={createdLink}
-                        className="text-blue-600 underline hover:text-blue-800"
+                        className="block text-mint underline hover:text-mint-light transition"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
@@ -81,12 +81,11 @@ export default function NewPage() {
                 </div>
             )}
             {resultLink && (
-                <div className="mt-6">
-                    <p className="font-semibold mb-2">結果確認用リンク(ホスト用):</p>
-                    {/* こちらのリンクも同様にスタイリング */}
+                <div className="mt-6 p-4 bg-background-light rounded">
+                    <p className="font-semibold mb-2 text-text-light">振り分け実行、結果確認用リンク:</p>
                     <a
                         href={resultLink}
-                        className="text-blue-600 underline hover:text-blue-800"
+                        className="block text-mint underline hover:text-mint-light transition"
                         target="_blank"
                         rel="noopener noreferrer"
                     >

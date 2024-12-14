@@ -11,7 +11,7 @@ export default function PreferenceOrderEditor({ items, onChange }) {
     };
 
     return (
-        <div className="bg-gray-100 p-4 rounded">
+        <div className="bg-background-light p-4 rounded">
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="items-droppable" direction="vertical">
                     {(provided, snapshot) => (
@@ -34,11 +34,11 @@ export default function PreferenceOrderEditor({ items, onChange }) {
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
-                                            className={`bg-white p-4 rounded border border-gray-300 shadow-sm transition 
-                      ${snapshot.isDragging ? 'bg-blue-50' : ''}`}
+                                            className={`bg-background-light p-4 rounded border border-border-light shadow transition 
+                      ${snapshot.isDragging ? 'bg-mint-light' : ''}`}
                                         >
-                                            <div className="font-bold mb-2">{index + 1}位:</div>
-                                            <div className="text-gray-700">{item}</div>
+                                            <div className="font-semibold mb-2 text-text-light">{index + 1}位:</div>
+                                            <div className="text-text-light">{item}</div>
                                         </div>
                                     )}
                                 </Draggable>

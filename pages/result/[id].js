@@ -1,5 +1,4 @@
 // pages/result/[id].js
-
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -62,57 +61,75 @@ export default function ResultPage() {
 
     if (error) {
         return (
-            <div style={{ margin: '20px' }}>
-                <h1>振り分け結果画面（ホスト用）</h1>
-                <p style={{ color: 'red' }}>{error}</p>
+            <div className="max-w-xl mx-auto mt-10 bg-background-light p-6 rounded shadow">
+                <h1 className="text-2xl font-bold mb-4 text-mint">振り分け結果画面</h1>
+                <p className="text-red-600">{error}</p>
             </div>
         );
     }
 
     if (!data) {
-        return <div style={{ margin: '20px' }}>読み込み中...</div>;
+        return (
+            <div className="max-w-xl mx-auto mt-10 bg-background-light p-6 rounded shadow">
+                <div className="text-text-light">読み込み中...</div>
+            </div>
+        );
     }
 
     const participants = data.participants || [];
     const preferences = data.preferences || {};
-    const submittedCount = Object.keys(preferences).length;
-    const totalCount = participants.length;
-
     const submittedParticipants = Object.keys(preferences); // 入力済み参加者名一覧
+    const totalCount = participants.length;
+    const submittedCount = submittedParticipants.length;
 
     return (
-        <div style={{ margin: '20px' }}>
-            <h1>振り分け結果画面（ホスト用）</h1>
+        <div className="max-w-2xl mx-auto mt-10 bg-background-light p-8 rounded shadow-lg">
+            <h1 className="text-3xl font-bold mb-6 text-mint">振り分け結果画面</h1>
             {totalCount > 0 ? (
                 <>
-                    <p>入力済み: {submittedCount} / {totalCount}</p>
-                    {/* 入力済み参加者一覧を表示 */}
-                    <ul>
-                        {submittedParticipants.map(p => (
-                            <li key={p}>{p}</li>
-                        ))}
-                    </ul>
-                    <button onClick={loadData}>更新</button>
+                    <div className="mb-6">
+                        <p className="font-semibold text-text-light">入力済み参加者:</p>
+                        <ul className="list-disc list-inside mt-2 text-text-secondary">
+                            {submittedParticipants.map(p => (
+                                <li key={p}>{p}</li>
+                            ))}
+                        </ul>
+                        <p className="mt-2 text-text-secondary">合計: {submittedCount} / {totalCount}</p>
+                    </div>
+                    <button
+                        onClick={loadData}
+                        className="bg-mint text-background px-4 py-2 rounded hover:bg-mint-light transition mb-4"
+                    >
+                        更新
+                    </button>
 
                     {!result && submittedCount === totalCount && (
-                        <div style={{ marginTop: '20px' }}>
-                            <button onClick={handleRun}>振り分けを実行</button>
+                        <div className="mb-6">
+                            <button
+                                onClick={handleRun}
+                                className="w-full bg-gold text-background px-4 py-3 rounded hover:bg-gold-light transition text-lg font-semibold"
+                            >
+                                振り分けを実行
+                            </button>
                         </div>
                     )}
 
                     {result && (
-                        <div style={{ marginTop: '20px' }}>
-                            <h2>結果</h2>
-                            <ul>
+                        <div className="mt-6">
+                            <h2 className="text-2xl font-semibold mb-4 text-mint">振り分け結果</h2>
+                            <ul className="space-y-2">
                                 {Object.entries(result).map(([participant, item]) => (
-                                    <li key={participant}>{participant} → {item}</li>
+                                    <li key={participant} className="flex justify-between bg-background-light p-3 rounded shadow">
+                                        <span className="text-text-light">{participant}</span>
+                                        <span className="text-gold font-semibold">{item}</span>
+                                    </li>
                                 ))}
                             </ul>
                         </div>
                     )}
                 </>
             ) : (
-                <p>まだ参加者またはアイテムが設定されていません。</p>
+                <p className="text-text-light">まだ参加者またはアイテムが設定されていません。</p>
             )}
         </div>
     );
