@@ -82,7 +82,7 @@ export default function NewPage() {
             )}
             {resultLink && (
                 <div className="mt-6 p-4 bg-background-light rounded">
-                    <p className="font-semibold mb-2 text-text-light">振り分け実行、結果確認用リンク:</p>
+                    <p className="font-semibold mb-2 text-text-light">送信状況確認、振り分け実行用リンク:</p>
                     <a
                         href={resultLink}
                         className="block text-mint underline hover:text-mint-light transition"
