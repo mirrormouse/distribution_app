@@ -1,0 +1,48 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Distribution {
+  id           String        @id @default(cuid())
+  createdAt    DateTime      @default(now())
+  participants Participant[] 
+  items        Item[]
+  preferences  Preference[]
+  result       Result?
+}
+
+model Participant {
+  id             String       @id @default(cuid())
+  name           String
+  distributionId String
+  distribution   Distribution @relation(fields: [distributionId], references: [id])
+}
+
+model Item {
+  id             String       @id @default(cuid())
+  name           String
+  distributionId String
+  distribution   Distribution @relation(fields: [distributionId], references: [id])
+}
+
+model Preference {
+  id              String       @id @default(cuid())
+  participantName String
+  preferenceList  String[]
+  distributionId  String
+  distribution    Distribution @relation(fields: [distributionId], references: [id])
+  viewToken       String?      @unique @default(cuid())
+}
+
+
+model Result {
+  id             String       @id @default(cuid())
+  distributionId String       @unique
+  assignment     Json
+  distribution   Distribution @relation(fields: [distributionId], references: [id])
+}

@@ -1,3 +1,12 @@
+/* styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-sans bg-gray-50 text-gray-900;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
